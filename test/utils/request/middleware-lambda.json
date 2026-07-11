@@ -1,0 +1,31 @@
+{
+  "origin": "API_GATEWAY_REST_EVENT",
+  "action": "",
+  "body": "",
+  "headers": {},
+  "queryStringParameters": {},
+  "pathParameters": {},
+  "path": "",
+  "httpMethod": "GET",
+  "accountId": "$context.accountId",
+  "apiId": "$context.apiId",
+  "authorizer": {
+    "principalId": "$context.authorizer.principalId",
+    "claims": {},
+    "context": {}
+  },
+  "identity": {
+    "authorizer": {},
+    "apiKey": "$context.identity.apiKey",
+    "apiKeyId": "$context.identity.apiKeyId"
+  },
+  "stageVariables": {},
+  "requestPath": "$context.path",
+  "protocol": "$context.protocol",
+  "requestId": "$context.requestId",
+  "requestTime": "$context.requestTime",
+  "requestTimeEpoch": "$context.requestTimeEpoch",
+  "resourceId": "$context.resourceId",
+  "resourcePath": "$context.resourcePath",
+  "stage": "$context.stage"
+}

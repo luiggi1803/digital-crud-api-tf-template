@@ -1,0 +1,15 @@
+node_modules/
+dist/
+build/
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!terraform/terraform.tfvars.example
+.terraform.lock.hcl
+*.zip
+.env
+.DS_Store
+coverage/
+.agents/
+skills-lock.json

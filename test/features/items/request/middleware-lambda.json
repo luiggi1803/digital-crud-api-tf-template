@@ -1,0 +1,13 @@
+{
+  "origin": "API_GATEWAY_REST_EVENT",
+  "action": "",
+  "body": "",
+  "headers": {},
+  "queryStringParameters": {},
+  "pathParameters": {},
+  "path": "",
+  "httpMethod": "GET",
+  "identity": {
+    "authorizer": {}
+  }
+}
