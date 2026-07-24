@@ -13,7 +13,7 @@ describe('eventSourceMiddleware', () => {
       multiValueQueryStringParameters: null,
       pathParameters: null,
       stageVariables: null,
-      requestContext: {} as any,
+      requestContext: {} as APIGatewayProxyEvent['requestContext'],
       resource: '',
       path: '',
       isBase64Encoded: false
@@ -26,6 +26,43 @@ describe('eventSourceMiddleware', () => {
     }
 
     expect(handler.event.source).toBe(EVENT_SOURCE.API_GATEWAY);
+  });
+
+  it('should map cognito claims to request user', async () => {
+    const event: APIGatewayProxyEvent = {
+      httpMethod: 'GET',
+      body: null,
+      headers: {},
+      multiValueHeaders: {},
+      queryStringParameters: null,
+      multiValueQueryStringParameters: null,
+      pathParameters: null,
+      stageVariables: null,
+      requestContext: {
+        authorizer: {
+          claims: {
+            sub: 'abc-123',
+            email: 'user@example.com',
+            'cognito:username': 'user@example.com'
+          }
+        }
+      } as any,
+      resource: '',
+      path: '',
+      isBase64Encoded: false
+    };
+
+    const middleware = eventSourceMiddleware();
+    const handler: any = { event };
+    if (middleware.before) {
+      await middleware.before(handler);
+    }
+
+    expect(handler.event.payload.user).toEqual({
+      sub: 'abc-123',
+      email: 'user@example.com',
+      username: 'user@example.com'
+    });
   });
 
   it('should identify S3 event', async () => {

@@ -5,6 +5,7 @@ const DEV_LOCAL = {
   LOG_LEVEL: 'INFO,ERROR,DEBUG',
   NO_COLOR: 'true',
   IS_OFFLINE: 'true',
+  AUTH_REQUIRED: 'false',
   AWS_ENDPOINT_URL: 'http://localhost:4566' //Floci -eliminar
 };
 

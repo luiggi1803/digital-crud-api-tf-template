@@ -35,6 +35,13 @@ const createLambdaEvent = (req, body, pathname, pathParams) => {
     headers: req.headers,
     body: body && Object.keys(body).length > 0 ? JSON.stringify(body) : null,
     requestContext: {
+      authorizer: {
+        claims: {
+          sub: 'local-dev-user',
+          email: 'dev@local.test',
+          'cognito:username': 'dev@local.test'
+        }
+      },
       requestId: 'local-' + Date.now(),
       stage: 'local',
       httpMethod: req.method,
