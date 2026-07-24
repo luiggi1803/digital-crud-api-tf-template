@@ -129,6 +129,7 @@ const eventSourceMiddleware = (options: EventSourceMiddlewareOptions = {}): Midd
   const extractPayload = (event: any) => {
     const source = identifyEventSource(event);
     logger.log(`Handler Event Source:: ${source}`);
+    logger.log(`Handler Event:: ${JSON.stringify(event)}`);
     switch (source) {
       case EVENT_SOURCE.API_GATEWAY:
         return extractApiGatewayPayload(event as APIGatewayProxyEvent);
