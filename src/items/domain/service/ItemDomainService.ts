@@ -43,8 +43,11 @@ export class ItemDomainService {
     }
 
     const actualizado: Item = {
-      ...existente,
-      ...params,
+      id: existente.id,
+      nombre: params.nombre ?? existente.nombre,
+      descripcion: params.descripcion ?? existente.descripcion,
+      precio: params.precio ?? existente.precio,
+      createdAt: existente.createdAt,
       updatedAt: new Date().toISOString()
     };
 

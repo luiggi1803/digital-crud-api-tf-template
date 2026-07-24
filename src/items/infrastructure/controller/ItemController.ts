@@ -81,7 +81,7 @@ export class ItemController {
     this.logger.log('actualizarItem request:', request);
     const id = (request.path as ObtenerItemRequest).id;
     const payload = { ...request.payload } as ActualizarItemRequest;
-    await this.requestValidator.actualizarItemValidacion({ id, ...payload });
+    await this.requestValidator.actualizarItemValidacion(payload);
     const item = await this.itemDomainService.actualizarItem(id, payload);
     if (!item) {
       throw new CustomException({

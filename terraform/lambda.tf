@@ -19,6 +19,7 @@ resource "aws_lambda_function" "crud" {
     variables = {
       REGION               = var.aws_region
       DYNAMODB_TABLE_ITEMS = aws_dynamodb_table.items.name
+      AUTH_REQUIRED        = "true"
     }
   }
 
