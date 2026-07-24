@@ -79,7 +79,7 @@ El artefacto Lambda **no** va a git. GHA lo genera y lo sube en el run remoto.
 
 ### HCP Terraform (cada workspace)
 
-1. Tag del workspace: `digital-crud-api` (string; debe coincidir con `versions.tf`)
+1. Tag Key=`project` Value=`digital-crud-api` (igual en dev y prod; coincide con `versions.tf`)
 2. **Workflow = CLI-driven / API-driven** (no VCS auto-apply; si el repo está conectado, desactiva triggers de VCS o cambia a CLI para no duplicar runs fallidos sin `build/`)
 3. **Execution Mode = Remote**
 4. **Auto Apply = On** (dev; en prod puedes dejar confirmación manual)
