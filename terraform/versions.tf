@@ -2,14 +2,12 @@ terraform {
   required_version = ">= 1.5.0"
 
   # Opción A: GitHub Actions construye la Lambda → terraform apply (Remote) en HCP.
-  # Workspaces: CLI/API-driven (no VCS auto-apply) + tag project=digital-crud-api
+  # Workspaces: CLI/API-driven + tag de workspace "digital-crud-api" (set of string).
   cloud {
     organization = "luiggi-org"
 
     workspaces {
-      tags = {
-        project = "digital-crud-api"
-      }
+      tags = ["digital-crud-api"]
     }
   }
 
