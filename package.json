@@ -5,6 +5,7 @@
   "scripts": {
     "compile": "tsc",
     "build": "npm run compile && node scripts/build.mjs",
+    "build:tf": "npm run build && node scripts/prepare-tf-build.mjs",
     "build:ci": "npm run test && npm run build",
     "test": "jest --coverage --maxWorkers=2",
     "test:watch": "jest --watchAll",

@@ -39,12 +39,6 @@ variable "lambda_memory" {
   default     = 256
 }
 
-variable "lambda_source_path" {
-  description = "Ruta al artefacto compilado de Lambda"
-  type        = string
-  default     = "../build"
-}
-
 variable "api_throttling_burst_limit" {
   description = "Límite burst de throttling en API Gateway"
   type        = number

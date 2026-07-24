@@ -1,0 +1,58 @@
+name: Deploy HCP Terraform
+
+# Opción A: push → GHA (npm run build:tf) → HCP Terraform Remote apply
+# El zip/build NO se sube a git.
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy (${{ github.ref_name }})
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
+
+    env:
+      TF_CLOUD_ORGANIZATION: luiggi-org
+      TF_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}
+      TF_WORKSPACE: ${{ github.ref_name == 'main' && 'digital-crud-api-tf-template-prod' || 'digital-crud-api-tf-template-dev' }}
+      TF_VAR_FILE: ${{ github.ref_name == 'main' && 'environments/prod.tfvars.example' || 'environments/dev.tfvars.example' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install & build Lambda artifact
+        working-directory: .
+        run: |
+          npm ci
+          npm run build:tf
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: '1.9.8'
+          terraform_wrapper: false
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve -var-file="$TF_VAR_FILE"

@@ -1,6 +1,7 @@
+# Artefacto en terraform/build/ (generado en CI con npm run build:tf; no versionar en git).
 data "archive_file" "lambda_zip" {
   type        = "zip"
-  source_dir  = var.lambda_source_path
+  source_dir  = "${path.module}/build"
   output_path = "${path.module}/lambda.zip"
 }
 

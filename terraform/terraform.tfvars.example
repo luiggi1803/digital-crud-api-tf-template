@@ -1,3 +1,6 @@
-aws_region   = "us-east-1"
+# Ejemplo genérico. Preferir environments/dev.tfvars.example o prod.tfvars.example
+# o variables en el workspace de HCP Terraform.
+
+aws_region   = "us-east-2"
 environment  = "dev"
 project_name = "digital-crud-api"
