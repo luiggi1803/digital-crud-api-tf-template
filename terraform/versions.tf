@@ -1,13 +1,16 @@
 terraform {
-  required_version = ">= 1.5.0"
+  # HCP UI / Actions usan ~1.15; tags key-value requieren TF reciente
+  required_version = ">= 1.10.0"
 
-  # Opción A: GitHub Actions construye la Lambda → terraform apply (Remote) en HCP.
-  # Workspaces: CLI/API-driven + tag de workspace "digital-crud-api" (set of string).
+  # Opción A: GitHub Actions → apply remoto en HCP (CLI-driven).
+  # Workspaces con tag Key=project Value=digital-crud-api; TF_WORKSPACE elige dev|prod.
   cloud {
     organization = "luiggi-org"
 
     workspaces {
-      tags = ["digital-crud-api"]
+      tags = {
+        project = "digital-crud-api"
+      }
     }
   }
 
