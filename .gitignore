@@ -1,13 +1,17 @@
 node_modules/
 dist/
 build/
+terraform/build/
 .terraform/
 *.tfstate
 *.tfstate.*
 *.tfvars
 !terraform/terraform.tfvars.example
+!terraform/environments/*.tfvars.example
 .terraform.lock.hcl
 *.zip
+override.tf
+*_override.tf
 .env
 .DS_Store
 coverage/

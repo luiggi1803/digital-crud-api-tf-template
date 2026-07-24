@@ -1,0 +1,6 @@
+# Copia a ../dev.tfvars (gitignored) o define las mismas vars en el workspace de HCP Terraform.
+# Región: us-east-2 | Prefijo de recursos: UE2-digital-crud-api-dev-*
+
+aws_region   = "us-east-2"
+environment  = "dev"
+project_name = "digital-crud-api"
