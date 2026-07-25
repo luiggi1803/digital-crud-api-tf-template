@@ -23,15 +23,14 @@ export class ItemRequestValidation {
     await validate(schema, payload);
   }
 
-  public async actualizarItemValidacion(payload: ActualizarItemRequest & ObtenerItemRequest): Promise<void> {
+  public async actualizarItemValidacion(payload: ActualizarItemRequest): Promise<void> {
     const schema = Joi.object()
       .keys({
-        id: Joi.string().required(),
         nombre: Joi.string().trim().optional(),
         descripcion: Joi.string().trim().optional(),
         precio: Joi.number().min(0).optional()
       })
-      .min(2);
+      .min(1);
     await validate(schema, payload);
   }
 

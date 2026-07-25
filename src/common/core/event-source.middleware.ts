@@ -2,7 +2,7 @@ import { MiddlewareObj } from '@middy/core';
 import { APIGatewayProxyEvent, APIGatewayProxyResult, EventBridgeEvent, S3Event, SNSEvent, SQSEvent } from 'aws-lambda';
 import { Logger } from '../Logger';
 import { HTTP_CONSTANT } from './http.constant';
-import { EventApiGateWayWithAuthorizer, RequestDto } from '../application/dto/RequestDto';
+import { EventApiGateWayWithAuthorizer, AuthorizedUser, RequestDto } from '../application/dto/RequestDto';
 import CustomException from '../application/exception/CustomException';
 import { ERROR_ERROR_INTERNO } from '../application/exception/ErrorConstants';
 import { ItemController } from '../../items/infrastructure/controller/ItemController';
@@ -89,26 +89,31 @@ const eventSourceMiddleware = (options: EventSourceMiddlewareOptions = {}): Midd
     }
   };
 
-  const extractInfoAuthorizer = (event: EventApiGateWayWithAuthorizer) => {
-    const principalId = event.identity?.authorizer?.principalId ?? '';
-    const tipoDocumento = principalId.charAt(0);
-    const nroDocumento = principalId.slice(1);
+  const extractAuthenticatedUser = (event: APIGatewayProxyEvent): AuthorizedUser | null => {
+    const claims = event.requestContext?.authorizer?.claims;
+    if (claims?.sub) {
+      return {
+        sub: String(claims.sub),
+        email: claims.email ? String(claims.email) : undefined,
+        username: claims['cognito:username'] ? String(claims['cognito:username']) : undefined
+      };
+    }
 
-    return {
-      identidad: {
-        numId: event.identity?.authorizer?.numId,
-        nroDocumento,
-        tipoDocumento,
-        codigoExterno: event.identity?.authorizer?.codigoExterno,
-        tercerosDuplicados: []
-      }
-    };
+    const legacy = (event as EventApiGateWayWithAuthorizer).identity?.authorizer;
+    if (legacy?.numId || legacy?.principalId) {
+      return {
+        sub: legacy.numId ?? legacy.principalId ?? '',
+        username: legacy.principalId
+      };
+    }
+
+    return null;
   };
 
   const extractApiGatewayPayload = (event: APIGatewayProxyEvent) => {
     const parsedBody = parseApiGatewayBody(event.body);
     const bodyPayload = (parsedBody as { payload?: unknown }).payload || parsedBody;
-    const bodyUser = extractInfoAuthorizer(event as EventApiGateWayWithAuthorizer);
+    const user = extractAuthenticatedUser(event);
 
     return {
       query: event.queryStringParameters || {},
@@ -117,13 +122,14 @@ const eventSourceMiddleware = (options: EventSourceMiddlewareOptions = {}): Midd
       body: event.body,
       headers: event.headers,
       httpMethod: event.httpMethod,
-      user: bodyUser
+      user
     };
   };
 
   const extractPayload = (event: any) => {
     const source = identifyEventSource(event);
     logger.log(`Handler Event Source:: ${source}`);
+    logger.log(`Handler Event:: ${JSON.stringify(event)}`);
     switch (source) {
       case EVENT_SOURCE.API_GATEWAY:
         return extractApiGatewayPayload(event as APIGatewayProxyEvent);

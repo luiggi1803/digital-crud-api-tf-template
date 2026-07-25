@@ -24,7 +24,7 @@ variable "project_name" {
 variable "lambda_runtime" {
   description = "Runtime de Lambda"
   type        = string
-  default     = "nodejs20.x"
+  default     = "nodejs22.x"
 }
 
 variable "lambda_timeout" {
@@ -37,12 +37,6 @@ variable "lambda_memory" {
   description = "Memoria de Lambda en MB"
   type        = number
   default     = 256
-}
-
-variable "lambda_source_path" {
-  description = "Ruta al artefacto compilado de Lambda"
-  type        = string
-  default     = "../build"
 }
 
 variable "api_throttling_burst_limit" {

@@ -17,15 +17,15 @@ const pkg = {
   version: '1.0.0',
   main: 'dist/items/infrastructure/bootstrap/App.js',
   dependencies: {
-    '@aws-sdk/client-dynamodb': '3.478.0',
-    '@aws-sdk/client-ssm': '3.478.0',
-    '@aws-sdk/lib-dynamodb': '3.478.0',
+    '@aws-sdk/client-dynamodb': '3.1085.0',
+    '@aws-sdk/client-ssm': '3.1085.0',
+    '@aws-sdk/lib-dynamodb': '3.1085.0',
     '@middy/core': '4.5.5',
-    '@nestjs/common': '10.4.19',
-    '@nestjs/core': '10.4.19',
-    joi: '17.13.3',
-    'reflect-metadata': '0.1.14',
-    uuid: '9.0.1'
+    '@nestjs/common': '11.1.28',
+    '@nestjs/core': '11.1.28',
+    joi: '17.13.4',
+    'reflect-metadata': '0.2.2',
+    uuid: '11.1.1'
   }
 };
 

@@ -19,3 +19,8 @@ export function validateEnv(): void {
     getRequiredEnv(name);
   }
 }
+
+export function isAuthRequired(): boolean {
+  const value = process.env.AUTH_REQUIRED?.trim().toLowerCase();
+  return value === 'true' || value === '1';
+}

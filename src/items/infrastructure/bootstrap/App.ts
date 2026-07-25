@@ -4,6 +4,7 @@ import { INestApplicationContext } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda';
 import {
+  authMiddleware,
   crudActionMiddleware,
   eventSourceMiddleware,
   requestMiddleware,
@@ -39,7 +40,8 @@ const createHandler = () => {
     .use(requestMiddleware())
     .use(crudActionMiddleware())
     .use(ssmMiddleware())
-    .use(eventSourceMiddleware());
+    .use(eventSourceMiddleware())
+    .use(authMiddleware());
 
   return (event: APIGatewayProxyEvent, context?: Partial<Context>) => {
     if (context?.awsRequestId) {

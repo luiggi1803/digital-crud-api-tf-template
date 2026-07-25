@@ -17,3 +17,8 @@ export const ERROR_ERROR_INTERNO = {
   CODIGO: 'CRUD004',
   MENSAJE: 'Error interno en el servidor'
 };
+
+export const ERROR_NO_AUTORIZADO = {
+  CODIGO: 'CRUD005',
+  MENSAJE: 'No autorizado'
+};

@@ -23,6 +23,21 @@ output "lambda_function_name" {
   value       = aws_lambda_function.crud.function_name
 }
 
+output "cognito_user_pool_id" {
+  description = "ID del Cognito User Pool"
+  value       = aws_cognito_user_pool.main.id
+}
+
+output "cognito_user_pool_client_id" {
+  description = "ID del cliente Cognito para el frontend (SPA)"
+  value       = aws_cognito_user_pool_client.frontend.id
+}
+
+output "cognito_region" {
+  description = "Región del Cognito User Pool"
+  value       = var.aws_region
+}
+
 output "crud_endpoints" {
   description = "Endpoints CRUD disponibles"
   value = {

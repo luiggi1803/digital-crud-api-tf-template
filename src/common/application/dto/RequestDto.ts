@@ -1,5 +1,3 @@
-import { APIGatewayProxyEvent } from 'aws-lambda';
-
 export interface RequestDto {
   payload: object;
   query: object;
@@ -10,26 +8,18 @@ export interface RequestDto {
   httpMethod?: string;
 }
 
-interface Identity {
-  numId: string;
-  nroDocumento: string;
-  tipoDocumento: string;
-  codigoExterno: string;
-  tercerosDuplicados: string[];
-}
-
 export interface AuthorizedUser {
-  identidad?: Identity;
+  sub: string;
+  email?: string;
+  username?: string;
 }
 
-export interface EventApiGateWayWithAuthorizer extends APIGatewayProxyEvent {
+export interface EventApiGateWayWithAuthorizer {
   identity?: {
-    authorizer: {
-      principalId: string;
-      integrationLatency: string;
-      codigoExterno: string;
-      numId: string;
-      tercerosDuplicados: string;
+    authorizer?: {
+      principalId?: string;
+      numId?: string;
+      codigoExterno?: string;
     };
   };
 }

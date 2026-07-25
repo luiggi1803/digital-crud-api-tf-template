@@ -24,14 +24,10 @@ describe('ItemRequestValidation', () => {
   });
 
   it('debe validar actualizar item correctamente', async () => {
-    await expect(validation.actualizarItemValidacion({ id: '1', precio: 20 })).resolves.toBeUndefined();
-  });
-
-  it('debe fallar si actualizar item viene sin id', async () => {
-    await expect(validation.actualizarItemValidacion({ precio: 20 } as never)).rejects.toBeInstanceOf(CustomException);
+    await expect(validation.actualizarItemValidacion({ precio: 20 })).resolves.toBeUndefined();
   });
 
   it('debe fallar si actualizar item viene vacío', async () => {
-    await expect(validation.actualizarItemValidacion({ id: '1' })).rejects.toBeInstanceOf(CustomException);
+    await expect(validation.actualizarItemValidacion({})).rejects.toBeInstanceOf(CustomException);
   });
 });

@@ -57,6 +57,19 @@ describe('ItemDomainService', () => {
     expect(result?.precio).toBe(150);
   });
 
+  it('no debe sobrescribir id ni createdAt al actualizar', async () => {
+    repository.obtenerPorId.mockResolvedValue(itemMock);
+    repository.guardar.mockResolvedValue();
+    const result = await service.actualizarItem('uuid-fijo-123', {
+      id: 'otro-id',
+      createdAt: '2020-01-01T00:00:00.000Z',
+      precio: 150
+    } as never);
+    expect(result?.id).toBe('uuid-fijo-123');
+    expect(result?.createdAt).toBe('2026-01-01T00:00:00.000Z');
+    expect(result?.precio).toBe(150);
+  });
+
   it('debe retornar null al actualizar item inexistente', async () => {
     repository.obtenerPorId.mockResolvedValue(null);
     const result = await service.actualizarItem('no-existe', { precio: 150 });

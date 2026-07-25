@@ -46,6 +46,7 @@ Acciones: `listarItems`, `obtenerItem`, `crearItem`, `actualizarItem`, `eliminar
 npm install
 npm run test
 npm run build
+npm run build:tf         # prepara terraform/build/ (solo CI/local; no commitear)
 npm run start:local    # http://localhost:3000
 ```
 
@@ -63,13 +64,42 @@ test/
     └── unit/                # Tests unitarios NestJS
 ```
 
-## Despliegue Terraform
+## Despliegue opción A (GitHub Actions → HCP Terraform)
 
-```bash
-cd terraform
-terraform init
-terraform apply
 ```
+push develop|main → GitHub Actions (build:tf) → HCP Terraform apply (Remote) → AWS
+```
+
+El artefacto Lambda **no** va a git. GHA lo genera y lo sube en el run remoto.
+
+| Rama | Workspace |
+|------|-----------|
+| `develop` | `digital-crud-api-tf-template-dev` |
+| `main` | `digital-crud-api-tf-template-prod` |
+
+### HCP Terraform (cada workspace)
+
+1. Tag Key=`project` Value=`digital-crud-api` (igual en dev y prod; coincide con `versions.tf`)
+2. **Workflow = CLI-driven / API-driven** (no VCS auto-apply; si el repo está conectado, desactiva triggers de VCS o cambia a CLI para no duplicar runs fallidos sin `build/`)
+3. **Execution Mode = Remote**
+4. **Auto Apply = On** (dev; en prod puedes dejar confirmación manual)
+5. Variables Env (Sensitive): `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`
+6. Variables Terraform: `aws_region`, `environment` (el workflow también pasa `-var-file`)
+
+### GitHub Secrets
+
+| Secret | Valor |
+|--------|--------|
+| `TF_API_TOKEN` | Token API de HCP (User Settings → Tokens) |
+
+### Uso
+
+```powershell
+git push origin develop   # deploy dev
+git push origin main      # deploy prod
+```
+
+También: Actions → **Deploy HCP Terraform** → Run workflow.
 
 ## Diferencia principal con el proyecto referencia
 
